@@ -38,25 +38,24 @@ public class Main {
 
     static PriorityQueue<Package> pq = new PriorityQueue<>();
 
-    // PirorityQueue 사용
+    // dijkstra 알고리즘을 통해 시작도시 S에서 각 도시로 가는 최단거리를 구합니다.
     static void dijkstra() {
         boolean[] visit = new boolean[N];
         Arrays.fill(D, INF);
-
-        PriorityQueue<Integer> temp = new PriorityQueue<>();
-        temp.add(S);
         D[S] = 0;
 
-        while (!temp.isEmpty()) {
-            int now = temp.poll();
-
-            if (visit[now]) continue;
-            visit[now] = true;
-
-            for (int i = 0; i < N; i++) {
-                if (!visit[i] && A[now][i] != INF && D[i] > D[now] + A[now][i]) {
-                    D[i] = D[now] + A[now][i];
-                    temp.add(i);
+        for (int i = 0; i < N - 1; i++) {
+            int v = 0, minDist = INF;
+            for (int j = 0; j < N; j++) {
+                if (!visit[j] && minDist > D[j]) {
+                    v = j;
+                    minDist = D[j];
+                }
+            }
+            visit[v] = true;
+            for (int j = 0; j < N; j++) {
+                if (!visit[j] && D[v] != INF && A[v][j] != INF && D[j] > D[v] + A[v][j]) {
+                    D[j] = D[v] + A[v][j];
                 }
             }
         }
